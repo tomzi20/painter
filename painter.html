@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+
+        body {
+            background: #F9F9F9;
+            margin: 0;
+            padding: 0;
+        }
+      
+        img {
+            width: 35px;
+            height: 35px;
+            margin: 0px;
+            padding: 0px;
+        }
+      
+        #canvesArea {
+            border: 2px solid black;
+            margin-top: 20px;
+            background: white;
+        }
+
+        #left {
+            float: left;
+            margin: 20px 20px 20px 20px;
+            border: solid 2px black;
+        }
+
+        #right {
+            float: left;
+            margin-right: 20px auto 20px auto;
+        }
+
+        .color {
+            width: 35px;
+            height: 35px;
+            border-radius: 200px;
+            float: left;
+            margin: 2px;
+            padding: 0px;
+        }
+
+        #black {
+            background: #000000;
+        }
+
+        #grey {
+            background: grey;
+        }
+
+        #red {
+            background: red;
+        }
+
+        #orange {
+            background: orange;
+        }
+
+        #yellow {
+            background: yellow;
+        }
+
+        #green {
+            background: green;
+        }
+
+        #blue {
+            background: blue;
+        }
+
+        #violet {
+            background: violet;
+        }
+
+        #pink {
+            background: pink;
+        }
+
+        #actualColor {
+            background: black;
+            margin-left: 0;   
+        }
+
+        #actualColor:hover {
+            border: 2px #F9F9F9 solid;
+        }
+
+        #colorRGB {
+            float: left;
+        }
+        
+        #rgb {
+            width: 65px;
+        }
+
+        #alertRGB {
+            font-weight: bold;
+            color: white;
+            background: red;
+            visibility: hidden;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            padding-top: 0;
+            margin-left: 41px;
+            width: 71px;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        #colorRGB {
+            margin: 5px 5px 0 5px;
+        }
+
+        #rgb {
+            float: left;
+        }
+
+        hr {
+            margin-top: 1px;
+        }
+
+        #lines {
+            text-align: center;
+        }
+
+        #hr1 {
+            border: solid 1px black;
+        }
+
+        #hr2 {
+            border: solid 2px black;
+        }
+
+        #hr3 {
+            border: solid 3px black;
+        }
+
+        #hr4 {
+            border: solid 4px black;
+        }
+
+        #hr5 {
+            border: solid 5px black;
+        }
+
+        .color, img {
+            border: 2px #F9F9F9 solid;
+        }
+
+        .color:hover, img:hover, .lines:hover {
+            border: 2px red solid;
+        }
+
+        .currentcolor, .choosen {
+            border: solid 2px black;
+        }
+
+        #colorRGB {
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        #colors {
+            padding-top: 0;
+            margin-top: 0; 
+        }
+
+        .currentline, #actualColor {
+            border: solid 2px black;
+        }
+
+    </style>
+
+    <title>Painter</title>
+
+  </head>
+
+  <body>
+    <!-- Menu -->
+    <div id="left">
+
+        <!-- Tools to draw -->
+        <div id="Imgs">
+            <img src="painter/pencil.png" id="pencil" title="pencil">
+            <img src="painter/rubber.png" id="rubber" title="rubber">
+            <img src="painter/choosecolor.png" id="choosecolor" title="color selector"><br>
+
+            <img src="painter/streightline.png" id="streightline" title="straight line">
+            <img src="painter/circle.png" id="circle">
+            <img src="painter/rectangle.png" id="rectangle"><br>
+            
+            <img src="painter/splain.png" id="clear">
+            <img src="painter/squaretriangle.png" id="rectangulartriangle">
+            <img src="painter/triangle.png" id="triangle"><br>
+        </div>
+
+        <!-- Tools to choose color -->
+        <form id="colorRGB">
+            <label>Give RBG color:</label><br />
+            <div class="color" id="actualColor"></div> <!-- Actual color -->
+            <input type="text" name="rgb" id="rgb" value="#AABBCC" size="7" maxlength="7"><br />
+            <p id="alertRGB">Inproper color!</p>
+        </form>
+    
+        <div id="colors">
+            <span class="color" id="black"></span>
+            <span class="color" id="grey"></span>
+            <span class="color" id="red"></span><br />
+            <span class="color" id="orange"></span>
+            <span class="color" id="yellow"></span>
+            <span class="color" id="green"></span><br />
+            <span class="color" id="blue"></span>
+            <span class="color" id="violet"></span>
+            <span class="color" id="pink"></span><br />
+        </div>
+    
+        <!-- Tools to choose thickness of lines -->
+        <span id="lines">
+            <span>Thicknes of lines:</span><br />
+            <div class="lines currentline">1px
+            <hr id="hr1"></div>
+            <div  class="lines">2px
+            <hr id="hr2"></div>
+            <div  class="lines">3px
+            <hr id="hr3"></div>
+            <div  class="lines">4px
+            <hr id="hr4"></div>
+            <div  class="lines">5px
+            <hr id="hr5"></div>
+        </span>
+
+    </div>
+
+    <!-- Area to draw -->
+    <div id="right" >
+
+        <canvas id="canvesArea">Please update your browser</canvas> 
+
+    </div>
+
+    <script>
+
+        /* dimensions of canvas */
+        let canvesWidth = screen.width - 180;
+        let canvesHeight = screen.height - 300;
+        canvesArea.setAttribute("width", canvesWidth);
+        canvesArea.setAttribute("height", canvesHeight);
+        document.body.style.width = screen.width + "px";
+
+        let actualcolor = "";
+        let actualThickness = 1;
+
+        /* choose actual color */
+        function chooseColor(event) {
+            let spans = colors.getElementsByClassName('color');
+            for (i = 0; i < spans.length; i++) {
+                spans[i].classList.remove("currentcolor");
+            }
+            let target = event.target.closest('span');
+            if (!target) return;
+            target.classList.add("currentcolor");
+            let styles = getComputedStyle(target);
+            actualcolor = styles.backgroundColor;
+            actualColor.style.backgroundColor = actualcolor;
+        }
+    
+        /* handlig of input of color */
+        function writeColor(event) {
+            let strcolor = rgb.value;
+            let regexp = /#[0-9A-F]{6}/i;
+            if (regexp.test(strcolor)) {
+                actualcolor = strcolor;
+                actualColor.style.backgroundColor =  strcolor;
+                let spans = colors.getElementsByClassName('color');
+                for (i = 0; i < spans.length; i++) {
+                    spans[i].classList.remove("currentcolor");
+                }
+                } else {
+                alertRGB.style.visibility = "visible";
+            }  
+        }
+
+        /* hide alert of wrong name of color when input is focus */
+        function focusinput() {
+            alertRGB.style.visibility = "hidden";
+            document.getElementById('rgb').addEventListener("keydown", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    writeColor();
+                }
+            });
+        }
+
+        /* when tool to draw is clicked the black frame is added */
+        function chooseImg(event) {
+            let imgs = document.getElementsByTagName("img");
+            for (i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+        }
+    
+        /* when user click on line the black frame is added and set is actual thickness */
+        function chooseLine(event) {
+            let divs = lines.getElementsByClassName('lines');
+            for (i = 0; i < divs.length; i++) {
+                divs[i].classList.remove("currentline");
+            }
+            let target = event.target.closest('div');
+            if (!target) return;
+            target.classList.add("currentline");
+            let style = getComputedStyle(target);
+            actualThickness = parseInt(target.innerHTML);
+            if (rubber.classList.contains("choosen")) setActualThickness();
+        }
+
+        /* function picker set a actual color by clicking on the specifed color on canvas */
+        function picker() {
+            let imgs = Imgs.getElementsByClassName("choosen");
+            for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            canvesArea.style.cursor = "crosshair";
+
+            function picking(event) {
+                if (!choosecolor.classList.contains("choosen")) return;
+                const rect = event.target.getBoundingClientRect();
+                const x = event.clientX - rect.left; 
+                const y = event.clientY - rect.top;
+                const context = canvesArea.getContext('2d');
+                const imgData = context.getImageData(x, y, 1, 1);
+                const data = imgData.data;
+                let arr = [];
+                let rgba;
+                if (+data[3] === 0) {
+                    rgba = "#FFFFFF";
+                } else {
+                    for (i = 0; i <= 2; i++) {
+                        arr[i] = data[i].toString(16);
+                        arr[i] = (arr[i].length == 1) ? "0" + arr[i] : arr[i];
+                    }
+                    rgba = "#" + arr[0] + arr[1] + arr[2];
+                }
+                actualColor.style.backgroundColor = rgba;
+                actualcolor = rgba;
+                let spans = colors.getElementsByClassName('color');
+                for (i = 0; i < spans.length; i++) {
+                    spans[i].classList.remove("currentcolor");;
+                }
+            }
+            canvesArea.addEventListener("click", picking);
+        }
+
+        let canvas = document.getElementById("canvesArea");
+        let context = canvas.getContext("2d");
+   
+        /* this function set proper cursor for rubber */
+        function setActualThickness() {
+            if (+actualThickness == 1) {
+                canvesArea.style.cursor = "url(painter/1px.png), crosshair";
+            } else if (+actualThickness == 2) {
+                canvesArea.style.cursor = "url(painter/2px.png), crosshair";
+            } else if (+actualThickness == 3) {
+                canvesArea.style.cursor = "url(painter/3px.png), crosshair";
+            } else if (+actualThickness == 4) {
+                canvesArea.style.cursor = "url(painter/4px.png), crosshair";
+            } else if (+actualThickness == 5) {
+                canvesArea.style.cursor = "url(painter/5px.png), crosshair";
+            }
+        }
+
+        /* rubber to erase from the drawing */
+        function rubberClicked(event) {
+
+            let mouseClicked = false;
+            let mouseReleased = true;
+            let imgs = Imgs.getElementsByClassName("choosen");
+            for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            setActualThickness();
+                     
+            function onMouseClick(e) { 
+                if (!rubber.classList.contains("choosen")) return;
+                mouseClicked = !mouseClicked;
+            }
+
+            function onMouseMove(e) { 
+                if (!rubber.classList.contains("choosen")) return;
+                if (mouseClicked) {
+                    context.beginPath(); 
+                    context.fillRect(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop + canvas.scrollTop, +actualThickness * 5, +actualThickness * 5, );
+                    context.lineWidth = +actualThickness;
+                    context.fillStyle = "#FFFFFF";
+                    context.fill();
+                    context.strokeStyle = "#FFFFFF";
+                    context.stroke();
+                }  
+            }
+
+            canvas.addEventListener("click", onMouseClick);
+            canvas.addEventListener("mousemove", onMouseMove);
+        }
+ 
+        /* pencil */
+        function pencilClicked(event) {
+            let imgs = Imgs.getElementsByClassName("choosen");
+            for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+                if (!target) return;
+                target.classList.add("choosen");
+            
+            canvesArea.style.cursor = "crosshair";
+
+            const canvas = document.getElementById('canvesArea');
+            const ctx = canvas.getContext('2d');
+            let coord = { x: 0, y: 0 };
+
+            function start(e) {
+                document.addEventListener('mousemove', draw);
+                reposition(e);
+            }
+
+            function reposition(e) {
+                coord.x = e.clientX - canvas.offsetLeft;
+                coord.y = e.clientY - canvas.offsetTop;
+            }
+
+            function stop() {
+                document.removeEventListener('mousemove', draw);
+            }
+
+            function draw(e) {
+                if (!pencil.classList.contains("choosen")) return;
+                ctx.beginPath();
+                ctx.lineWidth = +actualThickness;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = actualcolor;
+                ctx.moveTo(coord.x, coord.y);
+                reposition(e);
+                ctx.lineTo(coord.x, coord.y);
+                ctx.stroke();
+            }
+
+            document.addEventListener('mousedown', start);
+            document.addEventListener('mouseup', stop);
+        }
+
+        /* draw streight line */
+        function drawLine(event) {
+
+            let imgs = Imgs.getElementsByClassName("choosen");
+                for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            canvesArea.style.cursor = "crosshair";
+
+            const canvas = document.getElementById('canvesArea');
+            const ctx = canvas.getContext('2d');
+            let coord = { x: 0, y: 0 };
+
+            let count = 0;
+            
+            function start(e) {
+                if (count == 0) {
+                    let target = e.target.closest('canvas');
+                    if (!target) return;
+                    repositionA(e);
+                    count = count + 1;
+                } else if (count == 1) { 
+                    repositionB(e);
+                    draw(e);
+                    count = 0;
+                }
+            }
+
+            function repositionA(e) {
+                coord.x = e.clientX - canvas.offsetLeft;
+                coord.y = e.clientY - canvas.offsetTop;
+            }
+
+            function repositionB(e) {
+                coord.v = e.clientX - canvas.offsetLeft;
+                coord.z = e.clientY - canvas.offsetTop;
+            }
+
+
+            function draw(e) {
+                if (!streightline.classList.contains("choosen")) return;
+                let target = e.target.closest('canvas');
+                if (!target) return;
+                ctx.beginPath();
+                ctx.lineWidth = +actualThickness;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = actualcolor;
+                ctx.moveTo(coord.x, coord.y);
+                ctx.lineTo(coord.v, coord.z);
+                ctx.stroke();
+            }
+
+            document.addEventListener('mousedown', start);
+        }
+
+        /* draw a circle */
+        function drawCircle(event) {
+            let imgs = Imgs.getElementsByClassName("choosen");
+                for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            canvesArea.style.cursor = "crosshair";
+
+            const canvas = document.getElementById('canvesArea');
+            const ctx = canvas.getContext('2d');
+            let coord = { x: 0, y: 0 };
+
+            let count = 0;
+            let lengthOfRadius = 0;
+            let centerX = 0;
+            let centerY = 0;
+            
+            function start(e) {
+                if (count == 0) {
+                    let target = e.target.closest('canvas');
+                    if (!target) return;
+                    reposition(e);
+                    count = count + 1;
+                } else if (count == 1) { 
+                    radius(e);
+                    draw(e);
+                    count = 0;
+                }
+            }
+
+            function reposition(e) {
+                coord.x = e.clientX - canvas.offsetLeft;
+                coord.y = e.clientY - canvas.offsetTop;
+            }
+
+            function radius(e) {
+                coord.v = e.clientX - canvas.offsetLeft;
+                coord.z = e.clientY - canvas.offsetTop;
+                centerX = (coord.x + coord.v) / 2;
+                centerY = (coord.y + coord.z) / 2;
+                lengthOfRadius = Math.sqrt(Math.pow((centerX - coord.v), 2) + Math.pow((centerY - coord.z), 2));
+            }
+
+            function draw(e) {
+                
+                if (!circle.classList.contains("choosen")) return;
+                let target = e.target.closest('canvas');
+                if (!target) return;
+                ctx.beginPath();
+                ctx.fillStyle = actualcolor;
+                ctx.arc(centerX, centerY, lengthOfRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            document.addEventListener('mousedown', start);
+        }
+
+        /* draw a rectangle */
+        function drawRectangle(event) {
+            let imgs = Imgs.getElementsByClassName("choosen");
+                for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            canvesArea.style.cursor = "crosshair";
+
+            const canvas = document.getElementById('canvesArea');
+            const ctx = canvas.getContext('2d');
+            let coord = { x: 0, y: 0 };
+
+            let count = 0;
+            let rectangleWidth = 0;
+            let rectangleHeight = 0;
+
+            function start(e) {
+                if (count == 0) {
+                    let target = e.target.closest('canvas');
+                    if (!target) return;
+                    reposition(e);
+                    count = count + 1;
+                } else if (count == 1) { 
+                    dimensions(e);
+                    draw(e);
+                    count = 0;
+                }
+            }
+
+            function reposition(e) {
+                coord.x = e.clientX - canvas.offsetLeft;
+                coord.y = e.clientY - canvas.offsetTop;
+            }
+
+            function dimensions(e) {
+                coord.v = e.clientX - canvas.offsetLeft;
+                coord.z = e.clientY - canvas.offsetTop;
+                rectangleWidth = coord.v - coord.x;
+                rectangleHeight = coord.z - coord.y;
+            }
+
+            function draw(e) {
+                
+                if (!rectangle.classList.contains("choosen")) return;
+                let target = e.target.closest('canvas');
+                if (!target) return;
+                ctx.beginPath();
+                ctx.fillStyle = actualcolor;
+                ctx.fillRect(coord.x, coord.y, rectangleWidth, rectangleHeight);
+                ctx.fill();
+            }
+
+            document.addEventListener('mousedown', start);
+        }
+
+        /* draw a triangle */
+        function drawTriangle(event) {
+
+            let imgs = Imgs.getElementsByClassName("choosen");
+                for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            canvesArea.style.cursor = "crosshair";
+
+            const canvas = document.getElementById('canvesArea');
+            const ctx = canvas.getContext('2d');
+            let coord = { x: 0, y: 0 };
+
+            let count = 0;
+
+            function start(e) {
+                if (count == 0) {
+                    let target = e.target.closest('canvas');
+                    if (!target) return;
+                    repositionA(e);
+                    count = count + 1;
+                } else if (count == 1) { 
+                    let target = e.target.closest('canvas');
+                    if (!target) return;
+                    repositionB(e);
+                    count = count + 1;
+                } else if (count == 2) { 
+                    repositionC(e);
+                    draw(e);
+                    count = 0;
+            }
+            }
+
+            function repositionA(e) {
+                coord.x = e.clientX - canvas.offsetLeft;
+                coord.y = e.clientY - canvas.offsetTop;
+            }
+
+            function repositionB(e) {
+                coord.v = e.clientX - canvas.offsetLeft;
+                coord.z = e.clientY - canvas.offsetTop;
+            }
+
+            function repositionC(e) {
+                coord.s = e.clientX - canvas.offsetLeft;
+                coord.t = e.clientY - canvas.offsetTop;
+            }
+
+            function draw(e) {               
+                if (!triangle.classList.contains("choosen")) return;
+                let target = e.target.closest('canvas');
+                if (!target) return;
+                ctx.beginPath();
+                ctx.fillStyle = actualcolor;
+                ctx.moveTo(coord.x, coord.y);
+                ctx.lineTo(coord.v, coord.z);
+                ctx.lineTo(coord.s, coord.t);
+                ctx.fill();
+            }
+
+            document.addEventListener('mousedown', start);
+
+        }
+
+        /* draw a rectangular triangle */
+        function drawSquareTriangle(event) {
+            let imgs = Imgs.getElementsByClassName("choosen");
+                for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            canvesArea.style.cursor = "crosshair";
+
+            const canvas = document.getElementById('canvesArea');
+            const ctx = canvas.getContext('2d');
+            let coord = { x: 0, y: 0 };
+
+            let count = 0;
+
+            function start(e) {
+                if (count == 0) {
+                    let target = e.target.closest('canvas');
+                    if (!target) return;
+                    repositionA(e);
+                    count = count + 1;
+                } else if (count == 1) { 
+                    let target = e.target.closest('canvas');
+                    if (!target) return;
+                    repositionB(e);
+                    count = count + 1;
+                } else if (count == 2) { 
+                    repositionC(e);
+                    let a;
+                    let b;
+                    a = (coord.z - coord.y) / (coord.v - coord.x);
+                    b = coord.y - a * coord.x;
+                    if (a > 0) {
+                    if (coord.t <= a * coord.s + b) {
+                        coord.c = coord.v;
+                        coord.d = coord.y;
+                    } else {
+                        coord.c = coord.x;
+                        coord.d = coord.z;
+                    }
+                    }   else if (a < 0) {
+                        if (coord.t >= a * coord.s + b) {
+                        coord.c = coord.v;
+                        coord.d = coord.y;
+                    } else {
+                        coord.c = coord.x;
+                        coord.d = coord.z;
+                    }  
+                    }
+                    draw(e);
+                    count = 0;
+                }
+            }
+
+            function repositionA(e) {
+                coord.x = e.clientX - canvas.offsetLeft;
+                coord.y = e.clientY - canvas.offsetTop;
+            }
+
+            function repositionB(e) {
+                coord.v = e.clientX - canvas.offsetLeft;
+                coord.z = e.clientY - canvas.offsetTop;
+            }
+
+            function repositionC(e) {
+                coord.s = e.clientX - canvas.offsetLeft;
+                coord.t = e.clientY - canvas.offsetTop;
+            }
+
+            function draw(e) {
+                if (!rectangulartriangle.classList.contains("choosen")) return;
+                let target = e.target.closest('canvas');
+                if (!target) return;
+                ctx.beginPath();
+                ctx.fillStyle = actualcolor;
+                ctx.moveTo(coord.x, coord.y);
+                ctx.lineTo(coord.v, coord.z);
+                ctx.lineTo(coord.c, coord.d);
+                ctx.fill();
+            }
+
+            document.addEventListener('mousedown', start);
+        }
+
+        /* clear whole area of canvas */
+        function clearCanvas(event) {
+            let imgs = Imgs.getElementsByClassName("choosen");
+                for (let i = 0; i < imgs.length; i++) {
+                imgs[i].classList.remove("choosen");
+            }
+            let target = event.target.closest('img');
+            if (!target) return;
+            target.classList.add("choosen");
+
+            const canvas = document.getElementById('canvesArea');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvesWidth, canvesHeight);
+        }
+
+
+        /* handlers */
+        colors.addEventListener("click", chooseColor);
+        rgb.addEventListener("blur", writeColor);
+        rgb.addEventListener("focus", focusinput);
+        Imgs.addEventListener("click", chooseImg);
+        lines.addEventListener("click", chooseLine);
+        choosecolor.addEventListener("click", picker);
+        pencil.addEventListener("click", pencilClicked);
+        rubber.addEventListener("click", rubberClicked);
+        streightline.addEventListener("click", drawLine);
+        circle.addEventListener("click", drawCircle);
+        rectangle.addEventListener("click", drawRectangle);
+        triangle.addEventListener("click", drawTriangle);
+        rectangulartriangle.addEventListener("click", drawSquareTriangle);
+        clear.addEventListener("click", clearCanvas);
+        
+    </script>
+  </body>
+</html>
